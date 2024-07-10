@@ -11,9 +11,9 @@ import java.util.Optional;
 
 @Service
 public class EmployeeService implements IEmployeeService {
-    @Autowired
-    EmployeeRepository employeeRepository;
 
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @Override
     public List<Employee> getAllEmployees() {
@@ -26,14 +26,29 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public List<Employee> getEmployeeByStatus(String status) {
-        return employeeRepository.findByStatus(status);
+    public Employee addEmployee(Employee employee) {
+        return employeeRepository.save(employee);
     }
 
     @Override
-    public List<Employee> getEmployeesByDepartment(String department) {
-        return employeeRepository.findByDepartment(department);
+    public Employee changeEmployeeStatus(Long id, String status) {
+        Optional<Employee> employeeOptional = employeeRepository.findById(id);
+        if (employeeOptional.isPresent()) {
+            Employee employee = employeeOptional.get();
+            employee.setStatus(status);
+            return employeeRepository.save(employee);
+        }
+        return null;
     }
 
-
+    @Override
+    public Employee updateEmployeeDepartment(Long id, String department) {
+        Optional<Employee> employeeOptional = employeeRepository.findById(id);
+        if (employeeOptional.isPresent()) {
+            Employee employee = employeeOptional.get();
+            employee.setDepartment(department);
+            return employeeRepository.save(employee);
+        }
+        return null;
+    }
 }

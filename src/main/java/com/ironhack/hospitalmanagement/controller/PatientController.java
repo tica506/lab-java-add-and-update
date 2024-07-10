@@ -17,13 +17,23 @@ public class PatientController implements IPatientController {
     IPatientService patientService;
 
     @GetMapping("/patients")
-    public List<Patient> getAllPatients(){
+    public List<Patient> getAllPatients() {
         return patientService.getAllPatients();
     }
 
     @GetMapping("/patients/{id}")
     public Patient getPatientById(@PathVariable Long id) {
         return patientService.getPatientById(id);
+    }
+
+    @PostMapping("/patients")
+    public Patient addPatient(@RequestBody Patient patient) {
+        return patientService.addPatient(patient);
+    }
+
+    @PutMapping("/patients/{id}")
+    public Patient updatePatient(@PathVariable Long id, @RequestBody Patient patientDetails) {
+        return patientService.updatePatient(id, patientDetails);
     }
 
     @GetMapping("/patients/dob")

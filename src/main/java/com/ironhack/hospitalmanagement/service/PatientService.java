@@ -28,6 +28,24 @@ public class PatientService implements IPatientService {
     }
 
     @Override
+    public Patient addPatient(Patient patient) {
+        return patientRepository.save(patient);
+    }
+
+    @Override
+    public Patient updatePatient(Long id, Patient patientDetails) {
+        Optional<Patient> patientOptional = patientRepository.findById(id);
+        if (patientOptional.isPresent()) {
+            Patient patient = patientOptional.get();
+            patient.setName(patientDetails.getName());
+            patient.setDateOfBirth(patientDetails.getDateOfBirth());
+            patient.setAdmittedBy(patientDetails.getAdmittedBy());
+            return patientRepository.save(patient);
+        }
+        return null;
+    }
+
+    @Override
     public List<Patient> getPatientsByDateOfBirthRange(LocalDate startDate, LocalDate endDate) {
         return patientRepository.findByDateOfBirthBetween(startDate, endDate);
     }
